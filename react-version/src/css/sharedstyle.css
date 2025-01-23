@@ -1,0 +1,293 @@
+/* Document styles */
+body {
+    font-family: "Comfortaa", sans-serif;
+}
+
+.divider {
+    height: 50px;
+}
+
+.divider-sm {
+    height: 30px;
+}
+
+a {
+    color: #00cc76;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+a:hover {
+    color: gray;
+}
+
+.click-logo {
+    border: 1px solid gray;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.btn-primary,
+.btn-success,
+.btn-green {
+    color: #fff;
+    background-color: #00cc76;
+    border-color: #00cc76;
+}
+
+#destination-search-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.btn-primary:hover,
+.btn-success:hover,
+.btn-green:hover {
+    background-color: #4a4a4a;
+    border-color: #4a4a4a;
+}
+
+.go-back,
+a.go-back {
+    color: gray;
+    font-size: large;
+}
+
+.green-text,
+.green {
+    color: #00cc76;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+/* Navbar */
+.navbar {
+    margin-bottom: 0;
+    background-color: #092327 !important;
+}
+
+/* Landing page header styles */
+.landing-wrapper {
+    position: relative;
+}
+
+.landing-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+}
+
+.landing-map {
+    height: 500px !important;
+    opacity: 0.4 !important;
+    background-image: url(../images/map-large.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.landing-input {
+    width: 70%;
+    margin: 0 auto;
+}
+
+/* Parallax styles */
+.image-stage {
+    height: 400px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.parallax {
+    height: auto;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+/* Map styles */
+#map-container {
+    width: 100%;
+    height: 340px;
+    margin: 0 0 0 0;
+    animation: all;
+}
+
+.location-feedback {
+    font-size: 1.3rem;
+}
+
+.fancy-bullet {
+    /* Used in cards on results page */
+    font-size: 1.5rem;
+}
+
+.results-card p {
+    line-height: 3rem;
+}
+
+/* User choice styles */
+.btn-transport,
+.btn-car {
+    background-color: #4a4a4a;
+    border-color: #4a4a4a;
+}
+
+.btn-transport:hover,
+.btn-car:hover {
+    background-color: #00cc76;
+    border-color: #00cc76;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: #00cc76;
+}
+
+.units {
+    font-size: 0.8rem;
+    color: gray;
+}
+
+.vehicle-choice {
+    display: inline-block;
+}
+
+.btn-fuel:focus {
+    background-color: #092327;
+    color: #00cc76;
+}
+
+/* Details styles */
+#graph-container {
+    width: 60%;
+}
+
+.minimized-text {
+    font-style: italic;
+    /* font-size: 2rem; */
+}
+
+.co2icon {
+    width: 10%;
+}
+
+#relative-metric-container .text-center p {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+#co2-amount {
+    font-size: 3rem;
+}
+
+/* Results styles */
+.jumbotron {
+    border-radius: 3px;
+}
+
+.jumbotron-fluid {
+    background-color: #092327;
+}
+
+#travelChoices {
+    border-radius: 20px;
+}
+
+
+.results-card {
+    /* max-width: 200px; */
+    min-width: 220px;
+    /* line-height: 1rem; */
+}
+
+.large-number {
+    font-size: 1.2rem;
+    color: rgb(133, 133, 133);
+}
+
+.info-text {
+    font-size: 0.9rem;
+}
+
+/* Footer styles */
+.footer {
+    text-align: center;
+}
+
+.small {
+    font-size: small;
+}
+
+#co2-metrics li {
+    list-style-type: none !important;
+}
+
+button:disabled,
+button[disabled] {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+}
+
+/* Media queries */
+@media only screen and (max-width: 1200px) {
+    #graph-container {
+        width: 100%;
+    }
+
+    .landing-input {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .divider,
+    .divider-sm {
+        display: none;
+    }
+
+    h2 {
+        font-size: 9vw;
+    }
+
+    .location-feedback {
+        font-size: 6vw;
+    }
+
+    #search-input-group .input-group-addon,
+    #search-input-group.input-group-btn,
+    #search-input-group .input-group .form-control {
+        display: block;
+        margin-bottom: 0px;
+        margin-top: 15px;
+        clear: both;
+    }
+    #search-input-group {
+        margin-top: 8vw;
+        display: block;
+    }
+    #origin-search-field,
+    #geolocation-search,
+    #search-submit-button, #search-input-group .input-group-append {
+        width: 100%;
+    }
+    
+
+
+    /* I Keep going back and forth on what I think looks best, uncomment this to restyle the search button to be center aligned and not full width */
+    /* #search-submit-button{
+        width: 50%;
+    }
+    .input-group-append {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    } */
+}

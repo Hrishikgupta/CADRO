@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRoute - CO2 trip calculator</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script
+      src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <link rel="stylesheet" href="./css/sharedstyle.css">
+</head>
+<body>
+    <!-- <script>
+        if (location.protocol !== "https:"){ location.replace(window.location.href.replace("http:", "https:")); } 
+    </script> -->
+    <!-- Modal for choosing from mulitple destinations -->
+    <div class="modal fade" id="locationChoiceModal" tabindex="-1" role="dialog" aria-labelledby="locationChoiceModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Location Options</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>There are multiple possible choices, please choose:</p>
+        <div class="list-group"></div>
+    </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Error modal -->
+    <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Warning!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="error-modal-text"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a class="navbar-brand" href="./">
+            <img src="assets\icons\nature.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+            <b>EcoRoute</b>
+        </a>
+        <a class="nav-item">
+            <a class="nav-link" href="#about">About</a>
+        </a>
+    </nav>
+    <!-- Map header -->
+    <div class="landing-wrapper">
+        <div  id="map-container" class="landing-map"></div>
+        <div class="landing-header">
+            <div class="container">
+                <h3 class="text-center mb-3 bold">Where do you want to go today?</h3>
+                <div class="input-group mb-3 landing-input">
+                    <input id="destination-search-field" type="text" class="form-control" placeholder="Where to?" aria-label="Destination" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <a id="destination-search-button" type="button" class="btn btn-success" id="search" href="./query.html"><img src="assets\icons\search.png" width="20" height="20"/> Let's go!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main content -->
+    <main>
+        <!-- Summary text -->
+        <section class="container mt-5 mb-5">
+            <div class="divider"></div>
+            <h2 id="about" class="mb-3">Making green choices when traveling—we're here to help!</h2>
+            <p>
+                EcoRoute is here to help you make <span class="green-text bold">environmentally conscious choices</span> when traveling 
+                from A to B. 
+                <br><br>
+                We're making it easy for you to learn more about the environmental impact of your travel choices by helping you 
+                <span class="green-text bold">understand the CO<sub>2</sub> emission</span> of your trip. Simply choose what travel options 
+                you want to consider for your route, enter your destination and origin, and we're giving you all the insights you need to 
+                make a green choice.
+                <br><br>
+                We're even taking the current weather into account to tell you if it's a good time to walk or take the bike. 
+                <span class="green-text bold">So get ready, hit the search button, and help us protect our planet!</span>
+            </p>
+            <div class="divider"></div>
+        </section>
+        <!-- Forest image stage -->
+        <div class="image-stage">
+            <img class="parallax" src='assets\img\forest.jpg' alt="image">
+        </div>
+        <!-- Data sources text -->
+        <section class="container mt-5 mb-5">
+            <div class="divider"></div>
+            <h2 class="mb-3">Technical background</h2>
+            <p>
+                This web application is using mapping and routing data from <a href="https://www.here.com/" target="_blank">HERE Technologies</a> 
+                to provide the routing for your trip and populate a visual map. 
+                <br><br>
+                We're also tapping into <a href="https://openweathermap.org/" target="_blank">OpenWeatherMap's API</a> to provide weather data 
+                for your trip. You can learn more about the APIs used on this website and find the Github page of this project by clicking the links below.
+            </p>
+            <div class="row mt-5">
+                <div class="col-sm-4 mb-2">
+                    <a href="https://www.here.com/" target="_blank"><img class="click-logo" src="./assets/img/here.jpg" alt="HERE"/></a>
+                </div>
+                <div class="col-sm-4 mb-2">
+                    <a href="https://openweathermap.org/" target="_blank"><img class="click-logo" src="./assets/img/openweathermap.jpg" alt="OpenWeatherMap"/></a>
+                </div>
+                <div class="col-sm-4 mb-2">
+                    <a href="https://github.com/titanian229/SmallButMighty1" target="_blank"><img class="click-logo" src="./assets/img/github.jpg" alt="Github"/></a>
+                </div>
+            </div>
+            <div class="divider"></div>
+        </section>
+        <!-- Ocean image stage -->
+        <div class="image-stage">
+            <img class="parallax" src='assets\img\ocean.jpg' alt="image">
+        </div>
+        <!-- About us section -->
+        <section class="container mt-5 mb-5">
+            <div class="divider"></div>
+            <h2 class="display-8 mb-3">The Faces behind EcoRoute</h2>
+            <div class="row">
+                <div class="col-sm-4 mb-2">
+                    <div class="card" style="width: 100%">
+                        <img src="./assets/img/marcel.jpg" class="card-img-top" alt="Marcel">
+                        <div class="card-body">
+                          <h5 class="card-title">Marcel Thiemann</h5>
+                          <p class="card-text">Marcel is a mobility specialist and developer based in Toronto.</p>
+                          <a href="https://github.com/cestmarcel" class="btn btn-primary btn-green">View Github profile</a>
+                          <a href="http://marcelthiemann.com" class="btn btn-primary btn-green mt-sm-2">Visit website</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 mb-2">
+                    <div class="card" style="width: 100%">
+                        <img src="./assets/img/james.jpg" class="card-img-top" alt="James">
+                        <div class="card-body">
+                          <h5 class="card-title">James Lee</h5>
+                          <p class="card-text">James is a avid automator and developer.  He's the one on the left.</p>
+                          <a href="https://github.com/titanian229" class="btn btn-primary btn-green">View Github profile</a>
+                          <a href="http://jamestlee.ca/" class="btn btn-primary btn-green mt-sm-2">Visit website</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="divider"></div>
+        </section>
+    </main>
+<!-- Footer -->
+<footer class="mb-5">
+    <div class="container">
+        <hr>
+        <p class="footer">Built with <i class="fa green-text">&#xf06c;</i> in Toronto | &copy; 2020</p>
+        <p class="footer small">Icons from <a href="http://flaticon.com">Flaticon.com</a> made by <a href="https://www.flaticon.com/free-icon/airplane_1358770">Pause08</a>, <a href="https://www.flaticon.com/authors/surang">Surang</a>, <a href="https://www.flaticon.com/authors/smashicons">Smashicons</a>, <a href="https://www.flaticon.com/authors/freepik">Freepik</a>, and <a href="https://www.flaticon.com/free-icon/airplane_2105232">Photo3Idea_Studio</a>.</p>
+    </div>
+</footer>
+
+<script src="./js/modals.js"></script>
+<script src="./js/mapping.js"></script>
+<script src="./js/index.js"></script>
+<!-- Parallax script for hero images, source: https://simpleparallax.com/ -->
+<script src="https://cdn.jsdelivr.net/npm/simple-parallax-js@5.2.0/dist/simpleParallax.min.js"></script>
+<script>
+    var images = document.querySelectorAll('.parallax');
+    new simpleParallax(images, {
+    scale: 1.5,
+    overflow: false,
+    orientation: "down",
+  });
+  </script>
+</body>
+
+</html>

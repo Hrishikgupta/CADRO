@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRoute - Trip details</title>
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script
+      src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <link rel="stylesheet" href="./css/sharedstyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <link rel="stylesheet" href="./css/sharedstyle.css">
+</head>
+<body>
+  <!-- ERROR MODAL -->
+  <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Warning!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p id="error-modal-text"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+      </div>
+    </div>
+  </div>
+  <!-- Navbar -->
+  <nav class="navbar">
+      <a class="navbar-brand" href="./">
+        <img src="assets\icons\nature.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+        EcoRoute
+      </a>
+      <a class="nav-item">
+          <a class="nav-link" href="./index.html#about">About</a>
+      </a>
+  </nav>
+  <!-- Map -->
+  <div id="map-container"></div>
+  <!-- Main content -->
+  <main class="container">
+    <p class="go-back mt-5 mb-3"><a href="./results.html">&larr; Back to results</a></p>
+    <h3>You're going to <span id="destination-name"></span> by <span id="transport-method"></span></h3>
+    <h5><span id="travel-text" class="green"></span> <span id="travel-distance"></span> <button type="button" class="btn btn-light" id="show-directions"> Show turn by turn directions</button> </h5> 
+    <!-- <img src='assets\icons\smartphone.png' width="20" height="20">  THIS WAS THE MOBILE ICON, I DIDN'T WANT TO LOSE IT -->
+    <div class="divider-sm"></div>
+    <!-- Environmental impact -->
+    <h3 class="mt-5">Your environmental impact</h3>
+    <h6 class="green"><img src="assets\icons\medal.png" width="20" height="20"> You're making the <span id="method-ranking"></span> most environmentally conscious choice! </h6>
+    <h6 id="zero-co2-note" class="green mt-4 font-italic d-none">Congratulations, your trip has no direct CO<sub>2</sub> emissions!</h6>
+    <div class="divider-sm"></div>
+    <!-- Comparison values -->
+    <div id="relative-section">
+      <h3 class="my-5">Your relative environmental impact</h3>
+      <div id="relative-metric-container">
+        <div class="row mx-0">
+          <div class="col-3 mx-0 text-center d-flex flex-column justify-content-center">
+            <p id="co2-amount" class="green">0</p>
+            <p><span id="co2-unit"></span> CO<sub>2</sub></p>
+          </div>
+          <div id="co2-metrics" class="col-9 d-flex flex-column justify-content-between">
+            <ul></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="divider-sm"></div>
+    <!-- Graph -->
+    <h3 id="comparison-graph-title" class="my-5">How that compares to your other options</h3>
+    <div id="graph-container">
+      <canvas id="emissionsGraph"></canvas>
+    </div>
+    <div class="divider-sm"></div>
+    <!-- Charity section -->
+    <h3 class="mt-5">Offset your impact</h3>
+    <h5 class="green mb-3">Consider donating to one of these organizations to offset your CO<sub>2</sub> impact.</h5>
+    <div class="row mt-5">
+      <div class="col-sm-4 mb-2">
+          <a href="https://davidsuzuki.org/" target="_blank"><img class="click-logo" src="./assets/img/dsf.jpg" alt="DSF"/></a>
+      </div>
+      <div class="col-sm-4 mb-2">
+          <a href="https://cpaws.org/" target="_blank"><img class="click-logo" src="./assets/img/cpaws.jpg" alt="CPAWS"/></a>
+      </div>
+      <div class="col-sm-4 mb-2">
+        <a href="https://environmentaldefence.ca/" target="_blank"><img class="click-logo" src="./assets/img/ed.jpg" alt="ED"/></a>
+    </div>
+    </div>
+    <div class="divider"></div>
+    <p class="go-back mt-3 mb-5"><a href="./results.html">&larr; Back to results</a></p>
+  </main>
+  <!-- Footer -->
+  <footer class="mb-5">
+    <div class="container">
+        <hr>
+        <p class="footer">Built with <i class="fa green-text">&#xf06c;</i> in Toronto | &copy; 2020</p>
+        <p class="footer small">Icons from <a href="http://flaticon.com">Flaticon.com</a> made by <a href="https://www.flaticon.com/free-icon/airplane_1358770">Pause08</a>, <a href="https://www.flaticon.com/authors/surang">Surang</a>, <a href="https://www.flaticon.com/authors/smashicons">Smashicons</a>, <a href="https://www.flaticon.com/authors/freepik">Freepik</a>, and <a href="https://www.flaticon.com/free-icon/airplane_2105232">Photo3Idea_Studio</a>.</p>
+    </div>
+  </footer>
+
+<script src="./js/modals.js"></script>
+<script src="./js/mapping.js"></script>
+<script src="./js/details.js"></script>
+</body>
+</html>

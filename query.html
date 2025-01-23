@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRoute - Your Query</title>
+    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script
+      src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"></script>
+    <script type="text/javascript" src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"></script>
+    <link rel="stylesheet" href="./css/sharedstyle.css">
+</head>
+<body>
+  <!-- Modal for choosing from multiple origins -->
+  <div
+      class="modal fade"
+      id="locationChoiceModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="locationChoiceModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Location Options</h5>
+            
+            <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+            >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>There are multiple possible choices, please choose:</p>
+            <div class="list-group">
+                
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- ERROR MODAL -->
+        <div
+        class="modal fade"
+        id="error-modal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="error-modal"
+        aria-hidden="true"
+      >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Warning!</h5>
+                  <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  >
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <p id="error-modal-text"></p>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a class="navbar-brand" href="./">
+      <img src="assets\icons\nature.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+      EcoRoute
+    </a>
+    <div class="nav-item">
+        <a class="nav-link" href="./index.html#about">About</a>
+    </div>
+  </nav>
+  <!-- Map container -->
+  <div id="map-container"></div>
+  <!-- User input -->
+  <div class="container">
+    <!-- Destination -->
+    <p class="go-back mt-5 mb-3"><a href="./index.html">&larr; Start over</a></p>
+    <h3 class="mb-2">Where you're going</h3>
+      <p id="destination" class='text-left green location-feedback'></p>
+    <!-- Origin -->
+    <h3 class="mt-5 mb-3">Your starting point</h3>
+      <div id="search-input-group" class="input-group mb-3 d-flex">
+          <button type="button" class="btn btn-light" id="geolocation-search"> Use my location <img src='assets\icons\location.png' width="20" height="20"></button>
+          <input id="origin-search-field" type="text" class="form-control" placeholder="Where are you?" aria-label="Destination" aria-describedby="button-addon2">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-success" id="search-submit-button"><img src="assets\icons\search.png" width="20" height="20"/></button>
+          </div>
+      </div>
+      <img id="loading-spinner" src="./assets/icons/spinner.gif" alt="Loading..." />
+      <p id="origin" class="text-left green location-feedback"></p>
+    <!-- Transport options -->
+    <div id="choice-buttons" class="d-none">
+    <h3 class="mt-5 mb-3">Which methods of transport?</h3>
+    <p style="color:red;margin-top:0;margin-bottom:1rem;" id="missing-routes-display" class="d-none">Unfortunately, routes were not found for: <span></span></p>
+    <div class="mb-1">
+      <button id="walk" onclick="triggerCalculation(event)" type="button" class="btn btn-primary btn-transport mt-1">Walk</button>
+      <button id="bike" onclick="triggerCalculation(event)" type="button" class="btn btn-primary btn-transport mt-1">Bike</button>
+      <button id="pt" onclick="triggerCalculation(event)" type="button" class="btn btn-primary btn-transport mt-1">Public Transport</button>
+    </div>
+    <div class="car-block mt-3 mb-2">
+      <div class="mb-2 vehicle-choice">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle btn-car" type="button" id="car" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Car
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a id="micro-car" onclick="triggerCalculation(event)" class="dropdown-item">Micro Car</a>
+            <a id="compact-car" onclick="triggerCalculation(event)" class="dropdown-item">Compact Car</a>
+            <a id="sedan" onclick="triggerCalculation(event)" class="dropdown-item">Sedan</a>
+            <a id="suv" onclick="triggerCalculation(event)" class="dropdown-item">SUV</a>
+          </div>
+        </div>
+      </div>
+      <div id="fuel-selector" class="btn-group" role="group" aria-label="Basic example">
+        <button id="gasoline" onclick="checkVehicleChoice(event)" class="btn btn-secondary btn-fuel">Gasoline</button>
+        <button id="diesel" onclick="checkVehicleChoice(event)" class="btn btn-secondary btn-fuel">Diesel</button>
+        <button id="electric" onclick="checkVehicleChoice(event)" class="btn btn-secondary btn-fuel">Electric</button>
+      </div>
+    </div>
+    <div>
+      <button id="truck" onclick="triggerCalculation(event)" type="button" class="btn btn-primary btn-transport">Commercial Truck (Diesel)</button>
+    </div>
+    </div>
+    <!-- Trigger calculation -->
+    <div class="mt-5 mb-5">
+      <button id="get-directions-button" type="button" class="btn btn-success btn-lg d-none">Get Directions</button>
+      <p class="go-back mt-2 mb-3"><a href="./index.html">&larr; Start over</a></p>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer class="mb-5">
+    <div class="container">
+        <hr>
+        <p class="footer">Built with <i class="fa green-text">&#xf06c;</i> in Toronto | &copy; 2020</p>
+        <p class="footer small">Icons from <a href="http://flaticon.com">Flaticon.com</a> made by <a href="https://www.flaticon.com/free-icon/airplane_1358770">Pause08</a>, <a href="https://www.flaticon.com/authors/surang">Surang</a>, <a href="https://www.flaticon.com/authors/smashicons">Smashicons</a>, <a href="https://www.flaticon.com/authors/freepik">Freepik</a>, and <a href="https://www.flaticon.com/free-icon/airplane_2105232">Photo3Idea_Studio</a>.</p>
+    </div>
+  </footer>
+
+<script src="./js/modals.js"></script>
+<script src="./js/mapping.js"></script>
+<script src="./js/query.js"></script>
+<script src="./js/co2.js"></script>
+
+</body>
+</html>

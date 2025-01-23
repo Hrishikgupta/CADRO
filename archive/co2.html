@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+<div>CAR CO2: <span class="micro-carCO2 compact-carCO2 sedanCO2 suvCO2"></span></div><div>Distance: <span class="micro-carDistance compact-carDistance sedanDistance suvDistance"></span></div>
+<div>PUBLIC TRANSPORT CO2: <span class="ptCO2"></span></div><div>Distance: <span class="ptDistance"></span></div>
+<div>BIKE CO2: <span class="bikeCO2"></span></div><div>Distance: <span class="bikeDistance"></span></div>
+<div>WALKING CO2: <span class="walkCO2"></span></div><div>Distance: <span class="walkDistance"></span></div>
+<div>TRUCK CO2: <span class="truckCO2"></span></div><div>Distance: <span class="truckDistance"></span></div>
+
+<button id="walk" onclick="triggerCalculation(event)" type="button" class="btn btn-primary">Walk</button>
+<button id="bike" onclick="triggerCalculation(event)" type="button" class="btn btn-primary">Bike</button>
+<button id="pt" onclick="triggerCalculation(event)" type="button" class="btn btn-primary">Public Transport</button>
+<button id="truck" onclick="triggerCalculation(event)" type="button" class="btn btn-primary">Truck</button>
+<button id="micro-car" onclick="triggerCalculation(event)" type="button" class="btn btn-Secondary">Micro Car</button>
+<button id="compact-car" onclick="triggerCalculation(event)" type="button" class="btn btn-Secondary">Compact Car</button>
+<button id="sedan" onclick="triggerCalculation(event)" type="button" class="btn btn-Secondary">Sedan</button>
+<button id="suv" onclick="triggerCalculation(event)" type="button" class="btn btn-Secondary">SUV</button>
+
+<div id="fuel-selector" class="btn-group" role="group" aria-label="Basic example">
+  <button id="gasoline" onclick="checkVehicleChoice(event)" class="btn btn-secondary">Gasoline</button>
+  <button id="diesel" onclick="checkVehicleChoice(event)" class="btn btn-secondary">Diesel</button>
+  <button id="electric" onclick="checkVehicleChoice(event)" class="btn btn-secondary">Electric</button>
+</div>
+
+<script src="./js/co2.js"></script>
+
+</body>
+</html>
